@@ -1,4 +1,4 @@
-const { allGroupMembers } = require('../utils/helpers');
+const { allGroupMembers } = require('../utils/groupUtils');
 const { getLinkPreview } = require('../utils/richPreview');
 const { setMode } = require('../utils/hidetagMode');
 

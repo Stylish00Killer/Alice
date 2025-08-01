@@ -1,4 +1,4 @@
-const { toggleAllGroups } = require('../utils/group');
+const { toggleAllGroups } = require('../utils/groupUtils');
 
 exports.name = 'open-all';
 exports.permissions = ['owner'];

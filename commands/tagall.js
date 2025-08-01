@@ -1,4 +1,4 @@
-const { allGroupMembers } = require('../utils/helpers');
+const { allGroupMembers } = require('../utils/groupUtils');
 
 exports.name = 'tagall';
 exports.permissions = ['group', 'admin'];
