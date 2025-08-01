@@ -1,5 +1,5 @@
 const config = require('../config');
-const { groupAdmins, isBotAdmin } = require('../utils/helpers');
+const { groupAdmins, isBotAdmin } = require('../utils/groupUtils');
 
 const LINK_REGEX = /(https?:\/\/|www\.|chat\.whatsapp\.com|channel\.whatsapp\.com)/i;
 

@@ -1,5 +1,5 @@
 const config = require('../config');
-const { groupAdmins, isBotAdmin } = require('../utils/helpers');
+const { groupAdmins, isBotAdmin } = require('../utils/groupUtils');
 
 const checkPermissions = async (sock, msg, command) => {
   const { permissions } = command;
