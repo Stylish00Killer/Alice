@@ -3,8 +3,6 @@ const closeAll = require('./close-all');
 const group = require('./group');
 const grouplink = require('./grouplink');
 const hidetag = require('./hidetag');
-const onhidetag = require('./onhidetag');
-const offhidetag = require('./offhidetag');
 const kick = require('./kick');
 const openAll = require('./open-all');
 const ping = require('./ping');
@@ -17,8 +15,6 @@ const commands = new Map([
   [group.name, group],
   [grouplink.name, grouplink],
   [hidetag.name, hidetag],
-  [onhidetag.name, onhidetag],
-  [offhidetag.name, offhidetag],
   [kick.name, kick],
   [openAll.name, openAll],
   [ping.name, ping],
