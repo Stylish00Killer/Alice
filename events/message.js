@@ -1,30 +1,40 @@
-const config = require('../config')
-const { antiLink } = require('../middleware/antiLink')
-const { antiFlood } = require('../middleware/antiFlood')
-const commands = require('../commands')
-const logger = require('../utils/logger')
+const config = require('../config');
+const { antiLink } = require('../middleware/antiLink');
+const { antiFlood } = require('../middleware/antiFlood');
+const commands = require('../commands');
+const logger =require('../utils/logger');
+const { isGroup, isOwner, isBot } = require('../utils/messageHelpers');
+const { checkAfk } = require('../commands/afk');
+
+async function handleMiddleware(sock, msg) {
+  if (isGroup(msg)) {
+    await antiLink(sock, msg, isOwner(msg), isBot(msg));
+    await antiFlood(sock, msg, isOwner(msg), isBot(msg));
+  }
+}
+
+function handleCommands(sock, msg) {
+  if (msg.message.conversation?.startsWith(config.prefix)) {
+    commands.handle(sock, msg);
+  }
+}
+
+async function processMessage(sock, msg) {
+  if (!msg.message) return;
+
+  try {
+    await checkAfk(sock, msg);
+    await handleMiddleware(sock, msg);
+    handleCommands(sock, msg);
+  } catch (err) {
+    logger.error('Error in message event', err);
+  }
+}
 
 module.exports = (sock) => {
   sock.ev.on('messages.upsert', async ({ messages, type }) => {
     for (const msg of messages) {
-      if (!msg.message) continue
-      try {
-        // Ignore status, broadcast, self
-        const isGroup = !!msg.key.remoteJid.endsWith('@g.us')
-        const isOwner = config.owners.includes(msg.key.participant?.split('@')[0])
-        const isBot = msg.key.participant?.startsWith(config.botNumber[0])
-        // Middleware: Anti-Link & Anti-Flood (groups only)
-        if (isGroup) {
-          await antiLink(sock, msg, isOwner, isBot)
-          await antiFlood(sock, msg, isOwner, isBot)
-        }
-        // Command Handling
-        if (msg.message.conversation?.startsWith(config.prefix)) {
-          await commands.handle(sock, msg)
-        }
-      } catch (err) {
-        logger.error('Error in message event', err)
-      }
+      await processMessage(sock, msg);
     }
-  })
-}
+  });
+};

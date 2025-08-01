@@ -1,12 +1,7 @@
-const config = require('../config');
-
 exports.name = 'open-all';
+exports.permissions = ['owner'];
 
 exports.run = async (sock, msg, args) => {
-  const sender = msg.key.participant || msg.key.remoteJid;
-  const senderNum = sender.split('@')[0];
-  if (!config.owners.includes(senderNum)) return;
-
   const groups = await sock.groupFetchAllParticipating();
   for (const id in groups) {
     try {
