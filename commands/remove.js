@@ -1,9 +1,7 @@
-const { isCommandAllowed } = require('../middleware/permissions');
-
 exports.name = 'remove';
+exports.permissions = ['group', 'admin'];
 
 exports.run = async (sock, msg, args) => {
-  if (!await isCommandAllowed(sock, msg, 'kick')) return;
   const mentions = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid || [];
   if (mentions.length === 0) return;
   const groupId = msg.key.remoteJid;

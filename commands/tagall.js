@@ -1,10 +1,9 @@
 const { allGroupMembers } = require('../utils/helpers');
-const { isCommandAllowed } = require('../middleware/permissions');
 
 exports.name = 'tagall';
+exports.permissions = ['group', 'admin'];
 
 exports.run = async (sock, msg, args) => {
-  if (!await isCommandAllowed(sock, msg, 'tagall')) return;
   const groupId = msg.key.remoteJid;
   const text = args.join(' ') || '';
   const mentions = await allGroupMembers(sock, groupId);
